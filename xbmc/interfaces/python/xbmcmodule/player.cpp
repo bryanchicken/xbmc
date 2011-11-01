@@ -81,7 +81,7 @@ namespace PYXBMC
     CPyThreadState pyState;
     self->pPlayer->Release();
     pyState.Restore();
-      
+
     self->pPlayer = NULL;
     self->ob_type->tp_free((PyObject*)self);
   }
@@ -156,7 +156,7 @@ namespace PYXBMC
     else if (PyString_Check(pObject) || PyUnicode_Check(pObject))
     {
       CFileItem item(PyString_AsString(pObject), false);
-      
+
       CPyThreadState pyState;
       g_application.getApplicationMessenger().MediaPlay(item.GetPath());
     }
@@ -273,6 +273,18 @@ namespace PYXBMC
     "Will be called when xbmc starts playing a file");
 
   PyObject* Player_OnPlayBackStarted(PyObject *self, PyObject *args)
+  {
+    Py_INCREF(Py_None);
+    return Py_None;
+  }
+
+  // Player_OnPlayBackRequested
+  PyDoc_STRVAR(onPlayBackRequested__doc__,
+    "onPlayBackRequested() -- onPlayBackRequested method.\n"
+    "\n"
+    "Will be called when xbmc requests the playing of a file");
+
+  PyObject* Player_OnPlayBackRequested(PyObject *self, PyObject *args)
   {
     Py_INCREF(Py_None);
     return Py_None;
@@ -581,14 +593,14 @@ namespace PYXBMC
   // Player_getAvailableAudioStreams
   PyDoc_STRVAR(getAvailableAudioStreams__doc__,
     "getAvailableAudioStreams() -- get Audio stream names\n");
-  
+
   PyObject* Player_getAvailableAudioStreams(PyObject *self)
   {
     if (g_application.m_pPlayer)
     {
       PyObject *list = PyList_New(0);
       for (int iStream=0; iStream < g_application.m_pPlayer->GetAudioStreamCount(); iStream++)
-      {  
+      {
         CStdString strName;
         CStdString FullLang;
         g_application.m_pPlayer->GetAudioStreamLanguage(iStream, strName);
@@ -599,10 +611,10 @@ namespace PYXBMC
       }
       return list;
     }
-    
+
     Py_INCREF(Py_None);
     return Py_None;
-  }  
+  }
 
   // Player_setAudioStream
   PyDoc_STRVAR(setAudioStream__doc__,
@@ -612,22 +624,22 @@ namespace PYXBMC
     "\n"
     "example:\n"
     "  - setAudioStream(1)\n");
-  
+
   PyObject* Player_setAudioStream(PyObject *self, PyObject *args)
   {
     int iStream;
     if (!PyArg_ParseTuple(args, (char*)"i", &iStream)) return NULL;
-    
+
     if (g_application.m_pPlayer)
     {
       int streamCount = g_application.m_pPlayer->GetAudioStreamCount();
       if(iStream < streamCount)
         g_application.m_pPlayer->SetAudioStream(iStream);
     }
-    
+
     Py_INCREF(Py_None);
     return Py_None;
-  }  
+  }
 
   // Player_getAvailableSubtitleStreams
   PyDoc_STRVAR(getAvailableSubtitleStreams__doc__,
@@ -667,7 +679,7 @@ namespace PYXBMC
   {
     int iStream;
     if (!PyArg_ParseTuple(args, (char*)"i", &iStream)) return NULL;
-  
+
     if (g_application.m_pPlayer)
     {
       int streamCount = g_application.m_pPlayer->GetSubtitleCount();
@@ -690,6 +702,7 @@ namespace PYXBMC
     {(char*)"playprevious", (PyCFunction)Player_PlayPrevious, METH_VARARGS, playprevious__doc__},
     {(char*)"playselected", (PyCFunction)Player_PlaySelected, METH_VARARGS, playselected__doc__},
     {(char*)"onPlayBackStarted", (PyCFunction)Player_OnPlayBackStarted, METH_VARARGS, onPlayBackStarted__doc__},
+    {(char*)"onPlayBackRequested", (PyCFunction)Player_OnPlayBackRequested, METH_VARARGS, onPlayBackRequested__doc__},
     {(char*)"onPlayBackEnded", (PyCFunction)Player_OnPlayBackEnded, METH_VARARGS, onPlayBackEnded__doc__},
     {(char*)"onPlayBackStopped", (PyCFunction)Player_OnPlayBackStopped, METH_VARARGS, onPlayBackStopped__doc__},
     {(char*)"onPlayBackPaused", (PyCFunction)Player_OnPlayBackPaused, METH_VARARGS, onPlayBackPaused__doc__},

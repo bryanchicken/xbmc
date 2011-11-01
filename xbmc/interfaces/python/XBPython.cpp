@@ -107,6 +107,21 @@ void XBPython::OnPlayBackStarted()
   }
 }
 
+// message all registered callbacks that playback was requested
+void XBPython::OnPlayBackRequested()
+{
+  CSingleLock lock(m_critSection);
+  if (m_bInitialized)
+  {
+    PlayerCallbackList::iterator it = m_vecPlayerCallbackList.begin();
+    while (it != m_vecPlayerCallbackList.end())
+    {
+      ((IPlayerCallback*)(*it))->OnPlayBackRequested();
+      it++;
+    }
+  }
+}
+
 // message all registered callbacks that we paused playing
 void XBPython::OnPlayBackPaused()
 {
@@ -266,7 +281,7 @@ void XBPython::UnloadExtensionLibs()
         "os.chdir_orignal   = os.chdir\n" \
         "os.chdir           = chdir_xbmc\n" \
         ""
- 
+
 #define RUNSCRIPT_POSTSCRIPT \
         "print '-->Python Interpreter Initialized<--'\n" \
         ""

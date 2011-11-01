@@ -26,6 +26,7 @@
 
 
 int Py_XBMC_Event_OnPlayBackStarted(void* arg);
+int Py_XBMC_Event_OnPlayBackRequested(void* arg);
 int Py_XBMC_Event_OnPlayBackEnded(void* arg);
 int Py_XBMC_Event_OnPlayBackStopped(void* arg);
 int Py_XBMC_Event_OnPlayBackPaused(void* arg);
@@ -38,6 +39,7 @@ public:
   void    SetCallback(PyThreadState *state, PyObject *object);
   void    OnPlayBackEnded();
   void    OnPlayBackStarted();
+  void    OnPlayBackRequested();
   void    OnPlayBackPaused();
   void    OnPlayBackResumed();
   void    OnPlayBackStopped();

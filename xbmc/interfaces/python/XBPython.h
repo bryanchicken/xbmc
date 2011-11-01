@@ -48,6 +48,7 @@ public:
   virtual ~XBPython();
   virtual void OnPlayBackEnded();
   virtual void OnPlayBackStarted();
+  virtual void OnPlayBackRequested();
   virtual void OnPlayBackPaused();
   virtual void OnPlayBackResumed();
   virtual void OnPlayBackStopped();
@@ -72,7 +73,7 @@ public:
   bool isRunning(int scriptId);
   bool isStopping(int scriptId);
   void setDone(int id);
-  
+
   /*! \brief Stop a script if it's running
    \param path path to the script
    \return true if the script was running and is now stopped, false otherwise
