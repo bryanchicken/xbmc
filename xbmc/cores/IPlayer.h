@@ -36,6 +36,7 @@ public:
   virtual ~IPlayerCallback() {}
   virtual void OnPlayBackEnded() = 0;
   virtual void OnPlayBackStarted() = 0;
+  virtual void OnPlayBackRequested() = 0;
   virtual void OnPlayBackPaused() {};
   virtual void OnPlayBackResumed() {};
   virtual void OnPlayBackStopped() = 0;
@@ -57,7 +58,7 @@ public:
     video_only = false;
   }
   double  starttime; /* start time in seconds */
-  double  startpercent; /* start time in percent */  
+  double  startpercent; /* start time in percent */
   bool    identify;  /* identify mode, used for checking format and length of a file */
   CStdString state;  /* potential playerstate to restore to */
   bool    fullscreen; /* player is allowed to switch to fullscreen */
@@ -167,7 +168,7 @@ public:
   //returns a state that is needed for resuming from a specific time
   virtual CStdString GetPlayerState() { return ""; };
   virtual bool SetPlayerState(CStdString state) { return false;};
-  
+
   virtual CStdString GetPlayingTitle() { return ""; };
 
 protected:
